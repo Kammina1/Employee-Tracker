@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS employees;
-CREATE DATABASE employees;
+DROP DATABASE IF EXISTS tracker;
+CREATE DATABASE tracker;
 
-USE employees;
+USE tracker;
 
 CREATE TABLE department (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

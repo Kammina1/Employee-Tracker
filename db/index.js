@@ -11,6 +11,26 @@ class Database {
         )
     }
 
+    findAllDepartments() {
+        return this.connection.promise().query(
+           'SELECT * FROM department'
+        )
+        // start()
+  }
+      
+    findAllRoles() {
+        return this.connection.promise().query(
+           'SELECT * FROM role'
+        )
+    } 
+
+    addDepartment() {
+        return this.connection.promise().query(
+            `INSERT INTO department (name)
+            VALUES ('${answer.name}')`,
+         ) 
+    }
+
 }
 
 module.exports = new Database(connection)
