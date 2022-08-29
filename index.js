@@ -1,25 +1,5 @@
 const inquirer = require('inquirer')
-const { findAllDepartments } = require('./db')
 const database = require('./db')
-
-// database.findAllEmployees().then(tracker => {
-//     console.log(tracker)
-//     promptUser(tracker[0])
-// }) 
-
-// database.findAllDepartments().then(tracker => {  
-//     console.log(tracker[0].map(department => ({ Dapartment: department.name, value: department.id })))  
-//     prompUser(tracker[0])
-// }) 
-
-// const employeeList = () => {
-//     {
-//         type: 'list',
-//         name: 'employee-list',
-//         message: 'Which employee would you like to select?',
-//         choices: employeesList.map(employee => ({ name: employee.first_name, value: employee.id}))
-//     }
-// }
 
 const questions =    {
     type: 'list',
@@ -29,40 +9,68 @@ const questions =    {
 }
 
 async function start() {
-    return await inquirer.prompt (questions)
-    .then ((answer) => {
-       userAnswer(answer)
-       console.log(answer) 
-    })
-    .catch((err) => {
-        console.log(err)
-    })
+  while (true) {   
+    var answer = await inquirer.prompt (questions)
+    await userAnswer(answer)
+  }
 }
 
-const userAnswer = (answer) => {
+const userAnswer = async (answer) => {
     switch (answer.bigList) {
       case "View all departments?":
-        findAllDepartments()
+        var departments = await database.findAllDepartments()
+        console.log(departments[0].map(department => department.name)) 
         break
   
       case "view all employees?":
-        findAllEmployees()
+        var employees = await database.findAllEmployees()
+        console.log(employees[0].map(employee => employee.first_name))
         break
   
       case "view all roles?":
-        findAllRoles()
+        var roles = await database.findAllRoles()
+        console.log(roles[0].map(role => role.title))
         break
   
       case "Add a department?":
-        addDepartment()
+        var answer = await inquirer.prompt ( {
+          type: 'input',
+          message: 'What department would you like to add?',
+          name: 'newDepartment'
+        })
+        console.log(answer)
+        await database.addDepartment(answer.newDepartment)
         break
 
       case "Add a employee?":
-        addEmployee()
+        var answer = await inquirer.prompt ( {
+          type: 'input',
+          message: 'What is the name of the Employee you would like to add?',
+          name: 'newEmployee'
+        })
+        console.log(answer)
+        await database.addEmployee(answer.newEmployee)
         break
 
       case "Add a role?":
-        addRole()
+        var answer = await inquirer.prompt ( {
+          type: 'input',
+          message: 'What role would you like to add?',
+          name: 'newRole'
+        }, 
+        {
+          type: 'input',
+          message: 'What is the salary of this role?',
+          name: 'roleSal'
+        },
+        {
+          type: 'input',
+          message: 'what is the department id?',
+          name: 'roleId'
+        }  
+        )
+        console.log(answer)
+        await database.addEmployee(answer.newRole, answer.roleSale, answer.roleId)
         break
 
       case "Update an employee?":
