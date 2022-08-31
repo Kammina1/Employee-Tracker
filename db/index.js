@@ -30,25 +30,35 @@ class Database {
          ) 
     }
 
-    addEmployee(newFirst, newLast, newPos, newMang) {
+    getRoleByTitle(title) {
+        return this.connection.promise().query(
+            `SELECT * FROM role WHERE title = '${title}'`
+         )
+    }
+
+    async addEmployee(newFirst, newLast, newPos, newMang) {
+        var roleId= await this.getRoleByTitle(newPos)
         return this.connection.promise().query(
             `INSERT INTO employee (first_name, last_name, role_id, manager_id)
-            VALUES ('${newFirst, newLast, newPos, newMang}')`,
+            VALUES ('${newFirst}', '${newLast}', ${roleId[0][0].id}, ${newMang})`,
          ) 
     }
 
     addRole(newRole, newSal, newRoleId) {
+        console.log(newRole, newSal, newRoleId)
         return this.connection.promise().query(
             `INSERT INTO role (title, salary, department_id)
-            VALUES ('${newRole, newSal, newRoleId}')`,
+            VALUES ('${newRole}', ${newSal}, ${newRoleId})`,
          ) 
     }
 
-    updateEmployee(upEmp) {
+    async updateEmployee(upEmp, upRole) {
+        
+        var roleId = await this.getRoleByTitle(upRole)
         return this.connection.promise().query(
             `UPDATE employee
-            SET manager_id = ('${upEmp}')
-            WHERE id = ${answer.id}`,
+            SET role_id = ('${roleId[0][0].id}')
+            WHERE id = ${upEmp}`,
          ) 
     }
 

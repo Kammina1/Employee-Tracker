@@ -1,4 +1,4 @@
-USE employees;
+USE tracker;
 
 INSERT INTO department (name)
 VALUES ('Coorperate'),
