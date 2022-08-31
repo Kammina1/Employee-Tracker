@@ -30,10 +30,10 @@ class Database {
          ) 
     }
 
-    addEmployee(newEmp) {
+    addEmployee(newFirst, newLast, newPos, newMang) {
         return this.connection.promise().query(
-            `INSERT INTO employee (first_name)
-            VALUES ('${newEmp}')`,
+            `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+            VALUES ('${newFirst, newLast, newPos, newMang}')`,
          ) 
     }
 

@@ -5,7 +5,7 @@ const questions =    {
     type: 'list',
     name: 'bigList',
     message: 'What would you like to do?',
-    choices: ['View all departments?', 'view all employees?', 'view all roles?', 'Add a department?', 'Add a employee', 'Add a role?', 'Update an employee?']
+    choices: ['View all departments?', 'view all employees?', 'view all roles?', 'Add a department?', 'Add a employee?', 'Add a role?', 'Update an employee?']
 }
 
 async function start() {
@@ -43,17 +43,37 @@ const userAnswer = async (answer) => {
         break
 
       case "Add a employee?":
-        var answer = await inquirer.prompt ( {
+        console.log(answer)
+        var positions = await database.findAllRoles();
+        positions = positions[0].map(position => position.title)
+        console.log(positions)
+        var answer = await inquirer.prompt ( [{
           type: 'input',
           message: 'What is the name of the Employee you would like to add?',
           name: 'newEmployee'
-        })
+        },
+        {
+          type: 'input',
+          message: 'What is the last name of the Employee you would like to add?',
+          name: 'newLastName'
+        },
+        {
+          type: 'list',
+          message: 'What is the employees position?',
+          name: 'newPosition',
+          choices: positions
+        },
+        {
+          type: 'input',
+          message: 'What is the new employees managers id?',
+          name: 'newEmpManager',
+        }])
         console.log(answer)
-        await database.addEmployee(answer.newEmployee)
+        await database.addEmployee(answer.newEmployee, answer.newLastName, answer.newPostion, answer.newEmpManger)
         break
 
       case "Add a role?":
-        var answer = await inquirer.prompt ( {
+        var answer = await inquirer.prompt ( [{
           type: 'input',
           message: 'What role would you like to add?',
           name: 'newRole'
@@ -67,7 +87,7 @@ const userAnswer = async (answer) => {
           type: 'input',
           message: 'what is the department id?',
           name: 'roleId'
-        }  
+        } ] 
         )
         console.log(answer)
         await database.addEmployee(answer.newRole, answer.roleSale, answer.roleId)
